@@ -1,0 +1,20 @@
+name = "simple_regex_tests"
+description = "Tests for simple_regex"
+version = "0.1.0-dev"
+
+authors = ["Paul Jarrett"]
+maintainers = ["Paul Jarrett <jarrett.paul.young@gmail.com>"]
+maintainers-logins = ["pyjarrett"]
+
+executables = ["simple_regex_tests"]
+
+[[depends-on]]
+simple_regex = "~0.0.1"
+[[depends-on]]
+trendy_test = "~0.0.3"
+
+[[pins]]
+simple_regex = { path = ".." }
+
+[build-switches]
+"*".style_checks = "No"

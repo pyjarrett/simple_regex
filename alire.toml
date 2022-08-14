@@ -1,0 +1,10 @@
+name = "simple_regex"
+description = "Port of Rob Pike's simple regex from the Practice of Programming."
+version = "0.1.0-dev"
+
+authors = ["Paul Jarrett"]
+maintainers = ["Paul Jarrett <jarrett.paul.young@gmail.com>"]
+maintainers-logins = ["pyjarrett"]
+
+[build-switches]
+"*".style_checks = "No"
