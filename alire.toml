@@ -1,6 +1,6 @@
 name = "simple_regex"
 description = "Port of Rob Pike's simple regex from the Practice of Programming."
-long_description = '''
+long-description = '''
 Provides a simple regular expression match function for Latin-1 strings, and
 supports *, ., ^ and $.
 '''
