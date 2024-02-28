@@ -11,78 +11,78 @@ package body Simple_Regex
    with Spark_Mode => On
 is
 
--- Declarations of the helper functions here, so Match can appear first in the file.
-function Match_Here (Regexp : String; Text : String) return Boolean
-   with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
-   Global => null,
-   Depends => (Match_Here'Result => (Regexp, Text));
+   -- Declarations of the helper functions here, so Match can appear first in the file.
+   function Match_Here (Regexp : String; Text : String) return Boolean
+      with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
+      Global => null,
+      Depends => (Match_Here'Result => (Regexp, Text));
 
-function Match_Star (C : Character; Regexp : String; Text : String) return Boolean
-   with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
-   Global => null,
-   Depends => (Match_Star'Result => (C, Regexp, Text));
+   function Match_Star (C : Character; Regexp : String; Text : String) return Boolean
+      with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
+      Global => null,
+      Depends => (Match_Star'Result => (C, Regexp, Text));
 
--- Search for regex anywhere in the text.
-function Match (Regexp : String; Text : String) return Boolean is
-begin
-   -- This check is missing from the sample code.
-   if Regexp'Length = 0 then
-      return True;
-   end if;
+   -- Search for regex anywhere in the text.
+   function Match (Regexp : String; Text : String) return Boolean is
+   begin
+      -- This check is missing from the sample code.
+      if Regexp'Length = 0 then
+         return True;
+      end if;
 
-   if Text'Length = 0 then
+      if Text'Length = 0 then
+         return False;
+      end if;
+
+      if Regexp (Regexp'First) = '^' then
+         return Match_Here (Regexp (Regexp'First + 1 .. Regexp'Last), Text);
+      end if;
+
+      for Index in Text'First .. Text'Length loop
+         if Match_Here (Regexp, Text (Index .. Text'Last)) then
+            return True;
+         end if;
+      end loop;
+
       return False;
-   end if;
+   end Match;
 
-   if Regexp (Regexp'First) = '^' then
-      return Match_Here (Regexp (Regexp'First + 1 .. Regexp'Last), Text);
-   end if;
-
-   for Index in Text'First .. Text'Length loop
-      if Match_Here (Regexp, Text (Index .. Text'Last)) then
-         return True;
-      end if;
-   end loop;
-
-   return False;
-end Match;
-
--- Search for regexp at the beginning of the text.
-function Match_Here (Regexp : String; Text : String) return Boolean is
-begin
-   if Regexp'Length = 0 then
-      return True;
-   end if;
-
-   if Regexp'Length > 1 and then Regexp (Regexp'First + 1) = '*' then
-      return Match_Star (Regexp (Regexp'First), Regexp (Regexp'First + 2 .. Regexp'Last), Text);
-   end if;
-
-   if Regexp (Regexp'First) = '$' and then Regexp'Length = 1 then
-      return Text'Length = 0;
-   end if;
-
-   if Text'Length > 0 and then
-      (Regexp (Regexp'First) = '.' or else Regexp (Regexp'First) = Text (Text'First))
-   then
-      return Match_Here (Regexp (Regexp'First + 1 .. Regexp'Last), Text (Text'First + 1 .. Text'Last));
-   end if;
-
-   return False;
-end Match_Here;
-
--- Search for c*regexp at the beginning of Text.
-function Match_Star (C : Character; Regexp : String; Text : String) return Boolean is
-begin
-   for Index in Text'First .. Text'Last loop
-      if Match_Here (Regexp, Text (Index .. Text'Last)) then
+   -- Search for regexp at the beginning of the text.
+   function Match_Here (Regexp : String; Text : String) return Boolean is
+   begin
+      if Regexp'Length = 0 then
          return True;
       end if;
 
-      exit when not (Text (Index) = C or else C = '.');
-   end loop;
+      if Regexp'Length > 1 and then Regexp (Regexp'First + 1) = '*' then
+         return Match_Star (Regexp (Regexp'First), Regexp (Regexp'First + 2 .. Regexp'Last), Text);
+      end if;
 
-   return False;
-end Match_Star;
+      if Regexp (Regexp'First) = '$' and then Regexp'Length = 1 then
+         return Text'Length = 0;
+      end if;
+
+      if Text'Length > 0 and then
+         (Regexp (Regexp'First) = '.' or else Regexp (Regexp'First) = Text (Text'First))
+      then
+         return Match_Here (Regexp (Regexp'First + 1 .. Regexp'Last), Text (Text'First + 1 .. Text'Last));
+      end if;
+
+      return False;
+   end Match_Here;
+
+   -- Search for c*regexp at the beginning of Text.
+   function Match_Star (C : Character; Regexp : String; Text : String) return Boolean is
+   begin
+      for Index in Text'First .. Text'Last loop
+         if Match_Here (Regexp, Text (Index .. Text'Last)) then
+            return True;
+         end if;
+
+         exit when not (Text (Index) = C or else C = '.');
+      end loop;
+
+      return False;
+   end Match_Star;
 
 end Simple_Regex;
