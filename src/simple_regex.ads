@@ -1,5 +1,5 @@
 package Simple_Regex
-    with SPARK_Mode => On,
+   with SPARK_Mode => On,
       Abstract_State => null,
       Pure
 is

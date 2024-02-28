@@ -13,14 +13,14 @@ is
 
 -- Declarations of the helper functions here, so Match can appear first in the file.
 function Match_Here (Regexp : String; Text : String) return Boolean
-    with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
-    Global => null,
-    Depends => (Match_Here'Result => (Regexp, Text));
+   with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
+   Global => null,
+   Depends => (Match_Here'Result => (Regexp, Text));
 
 function Match_Star (C : Character; Regexp : String; Text : String) return Boolean
-    with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
-    Global => null,
-    Depends => (Match_Star'Result => (C, Regexp, Text));
+   with Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
+   Global => null,
+   Depends => (Match_Star'Result => (C, Regexp, Text));
 
 -- Search for regex anywhere in the text.
 function Match (Regexp : String; Text : String) return Boolean is
