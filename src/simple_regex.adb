@@ -30,6 +30,10 @@ begin
       return True;
    end if;
 
+   if Text'Length = 0 then
+      return False;
+   end if;
+
    if Regexp (Regexp'First) = '^' then
       return Match_Here (Regexp (Regexp'First + 1 .. Regexp'Last), Text);
    end if;

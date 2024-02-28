@@ -16,6 +16,9 @@ function Match (Regexp : String; Text : String)
    return Boolean
 with
    Pre => Regexp'Last < Max_String_Length and then Text'Last < Max_String_Length,
+   Post => (if Regexp'Length = 0 then Match'Result = True
+            else (if Text'Length = 0 then Match'Result = False
+                  else Match'Result = True or else Match'Result = False)),
    Global => null,
    Depends => (Match'Result => (Regexp, Text));
 
