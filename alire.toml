@@ -14,3 +14,5 @@ tags = ["regex", "text"]
 
 [build-switches]
 "*".style_checks = "No"
+[[depends-on]]
+gnatprove = "^13.2.1"
